@@ -65,14 +65,16 @@
 
     //10
     let list = document.getElementsByTagName("ul")[0];
-    list.append(item)
+    list.appendChild(item)
 
     //11
-    let firstItem = document.getElementsByTagName("ul")[0].childNodes[1]
-    console.log(document.getElementsByTagName("ul")[0].childNodes)
+    let unorderedList = document.getElementsByTagName("ul")[0]
+    let firstItem = unorderedList.getElementsByTagName("li")[0]
     firstItem.classList.remove("big")
 
     //12
+    let secondItem = unorderedList.getElementsByTagName("li")[1]
+    secondItem.classList.add("blue")
 
     //13
     let imgClone = document.getElementsByTagName("img")[0].cloneNode(true)
