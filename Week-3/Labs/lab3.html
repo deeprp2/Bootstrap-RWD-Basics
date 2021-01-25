@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lab 3</title>
+</head>
+<body>
+
+<script>
+    let config;
+
+    fetch("../../config.json").then(async (response) => {
+        config = await response.json()
+
+        fetch(`https://api.nasa.gov/planetary/apod?api_key=${config["NASA-API-Key"]}`)
+            .then(response => response.json())
+            .then(data => {
+                addHeader(data)
+                addImage(data)
+                addContent(data)
+            });
+    })
+
+    function addHeader(data) {
+        let header = document.createElement("h1");
+        header.innerText = data.title;
+        document.body.appendChild(header)
+    }
+
+    function addImage(data) {
+        let img = document.createElement("img");
+        img.src = data.hdurl
+        img.width = 100
+        img.height = 100
+        document.body.appendChild(img)
+    }
+
+    function addContent(data) {
+        let content = document.createElement("p")
+        content.innerText = data.explanation
+        document.body.appendChild(content)
+    }
+</script>
+</body>
+</html>
