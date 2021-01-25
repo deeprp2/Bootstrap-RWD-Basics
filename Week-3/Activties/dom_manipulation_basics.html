@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>DOM Manipulation</title>
+
+    <style>
+        .big {
+            font-size: 3em;
+        }
+
+        .blue {
+            color: blue;
+        }
+
+        .bigBorder {
+            border: black 3px solid;
+        }
+    </style>
+
+</head>
+<body>
+
+<div id="div1" class="bigBorder"></div>
+<div id="div2">
+    <img src="">
+</div>
+<div id="div3">
+    This div should be programmatically removed.
+</div>
+
+<ul>
+    <li class="big blue">IT202</li>
+</ul>
+
+<script>
+    //1
+    document.getElementById("div1").innerText = "UIC"
+
+    //2
+    document.getElementById("div1").style.color = "#D50032"
+
+    //3
+    document.getElementById("div1").classList.add("big")
+
+    //4
+    document.getElementsByTagName("img")[0].src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/University_of_Illinois_at_Chicago_circle_logo.svg/1200px-University_of_Illinois_at_Chicago_circle_logo.svg.png'
+
+    //5
+    document.getElementsByTagName("img")[0].style.width = "25%"
+    document.getElementsByTagName("img")[0].style.height = "25%"
+
+    //6
+    document.getElementById("div3").remove()
+
+    //7
+    document.getElementsByTagName("title")[0].innerText = "deeprp2"
+
+    //8
+    let item = document.createElement("li");
+
+    //9
+    item.innerText = "Computer Science"
+
+    //10
+    let list = document.getElementsByTagName("ul")[0];
+    list.append(item)
+
+    //11
+    let firstItem = document.getElementsByTagName("ul")[0].childNodes[1]
+    console.log(document.getElementsByTagName("ul")[0].childNodes)
+    firstItem.classList.remove("big")
+
+    //12
+
+    //13
+    let imgClone = document.getElementsByTagName("img")[0].cloneNode(true)
+
+    //14
+    document.getElementById("div1").appendChild(imgClone)
+
+</script>
+
+
+</body>
+</html>
