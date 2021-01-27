@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Event Handler Basics</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
+
+    <style>
+        .bigger {width:400px; height:600px;}
+        blockquote {font-family: "Architects Daughter", Arial; font-size: 2em; }
+    </style>
+
+</head>
+<body>
+
+<div id="images">
+    <img src="https://picsum.photos/seed/a/200/300" alt="random image" onmouseover="enlargeImage(this)" onmouseout="normalImage(this)">
+    <img src="https://picsum.photos/seed/b/200/300" alt="random image" onmouseover="enlargeImage(this)" onmouseout="normalImage(this)">
+    <img src="https://picsum.photos/seed/c/200/300" alt="random image" onmouseover="enlargeImage(this)" onmouseout="normalImage(this)">
+</div>
+
+<blockquote cite="https://quoteinvestigator.com/2014/05/27/rising/" onclick="onQuoteClick(this)">
+    "The greatest glory in living lies not in never falling, but in rising every time we fall." -Nelson Mandela (and others)
+</blockquote>
+
+<script>
+    // 1. when the user mouse over an image, add the bigger class
+    function enlargeImage(event) {
+        event.classList.add("bigger")
+    }
+
+    // 2. when the user mouse out of an image, remove the bigger class;
+    function normalImage(event) {
+        event.classList.remove("bigger")
+    }
+
+    // 3. when the user clicks the quote, open the cite value in a new tab
+    function onQuoteClick(event) {
+        if (event.cite) {
+            window.open(event.cite, "_blank");
+        }
+    }
+</script>
+
+</body>
+</html>
