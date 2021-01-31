@@ -7,19 +7,13 @@
 <body>
 
 <script>
-    let config;
-
-    fetch("../../config.json").then(async (response) => {
-        config = await response.json()
-
-        fetch(`https://api.nasa.gov/planetary/apod?api_key=${config["NASA-API-Key"]}`)
-            .then(response => response.json())
-            .then(data => {
-                addHeader(data)
-                addImage(data)
-                addContent(data)
-            });
-    })
+    fetch("https://api.nasa.gov/planetary/apod?api_key=iVfZfKmFtzlqyjfqEACRkQQvOpHdEWyjnGOqmawU")
+        .then(response => response.json())
+        .then(data => {
+            addHeader(data)
+            addImage(data)
+            addContent(data)
+        });
 
     function addHeader(data) {
         let header = document.createElement("h1");
