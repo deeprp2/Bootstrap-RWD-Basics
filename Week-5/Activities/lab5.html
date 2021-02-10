@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Employee Search</title>
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+<form id="data">
+    <!-- <input type="text" name="department" id="department" > Department<br>
+     -->
+
+    <select name="department" id="department">
+        <option></option>
+    </select>
+
+    <input type="radio" name="salary_or_hourly" value="Hourly"> Hourly
+    <label>
+        <input type="radio" name="salary_or_hourly" value="Salary">
+    </label> Salary
+
+
+
+    <!-- <input type="text" name="lastName" id="lastName"> Last Name<br>
+
+    <select name="food" id="food">
+      <option></option>
+      <option>Pizza</option>
+      <option>Burrito</option>
+      <option>Biryani</option>
+    </select>
+
+    <br/> -->
+</form>
+
+<button id="search">Search</button>
+
+<div id="results">
+
+</div>
+
+<script src="sw.js"></script>
+
+<script>
+    let empData;
+
+    // get the unique department names and populate the select control
+    fetch("https://data.cityofchicago.org/resource/xzkq-xp2w.json?$select=distinct%20department")
+        .then ( (response) => {return response.json() })
+        .then ( (result) => {
+
+            // if sorting by a string value, need a more complex sort function
+            result.sort((a, b) => {
+                if (a === b) {
+                    return 0;
+                }
+                return a.department < b.department ? -1 : 1;
+            });
+
+            for (let dept of result) {
+                let opt = document.createElement("option");
+                opt.innerText = dept.department;
+                console.log(opt);
+                document.querySelector("#department").append(opt);
+
+            }
+        })
+
+    let endpoint = "https://data.cityofchicago.org/resource/xzkq-xp2w.json";
+
+    document.querySelector("#search").addEventListener ("click", (e) => {
+
+        document.querySelector("#results").innerText = "fetching results";
+
+        let f = document.querySelector("form");
+        let fd = new FormData(f);
+        let sp = new URLSearchParams(fd);
+
+        let url = endpoint +  "?" + sp.toString();
+
+        // fetch
+        fetch (url)
+            .then ( (response) => { return response.json() })
+            .then ( (data) => {
+                document.querySelector("#results").innerText = "Results found: " + data.length;
+                for (let item of data) {
+                    // create a paragraph
+                    let p = document.createElement ("p");
+                    // set the value
+                    p.innerText = item["name"] + ": " + item["job_titles"];
+                    // append to body
+                    document.querySelector("#results").append(p);
+
+                }
+
+            })
+    });
+
+</script>
+
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('sw.js').then(function(registration) {
+                // Registration was successful
+                console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            }, function(err) {
+                // registration failed :(
+                console.log('ServiceWorker registration failed: ', err);
+            });
+        });
+    }
+</script>
+</body>
+</html>

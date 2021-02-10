@@ -1,0 +1,21 @@
+{
+  "name": "lab5",
+  "short_name": "Emp Search",
+  "start_url": ".",
+  "background_color": "#690505",
+  "theme_color": "#690505",
+  "display": "standalone",
+  "description": "Search the City of Chicago Employees database",
+  "icon": [
+    {
+      "src": "images/icon192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icon512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
