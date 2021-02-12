@@ -6,7 +6,7 @@
   "app_name": "Lab5",
   "short_name": "Emp Search",
   "description": "Search the City of Chicago Employees database",
-  "icon": [
+  "icons": [
     {
       "src": "images/icon192.png",
       "type": "image/png",
