@@ -1,9 +1,10 @@
 let CACHE_NAME = 'my-site-cache-v1';
 let urlsToCache = [
-    "./",
     "lab5.html",
-    "images/icon192.png",
-    "images/icon512.png",
+    "./Week-5/Activities/images/icon192.png",
+    "./Week-5/Activities/images/icon512.png",
+    "manifest.json",
+    "sw.js"
 ]
 
 self.addEventListener('install', function(event) {
