@@ -2,18 +2,18 @@
   "theme_color": "#690505",
   "background_color": "#690505",
   "display": "standalone",
-  "start_url": "http://localhost:63342/IT%202020/Bootstrap-RWD-Basics/lab5.html",
+  "start_url": "lab5.html",
   "app_name": "Lab5",
   "short_name": "Emp Search",
   "description": "Search the City of Chicago Employees database",
   "icon": [
     {
-      "src": "./Week-5/Activities/images/icon192.png",
+      "src": "./images/icon192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "./Week-5/Activities/images/icon512.png",
+      "src": "./images/icon512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
