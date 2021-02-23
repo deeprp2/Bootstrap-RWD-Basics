@@ -20,7 +20,6 @@ document.addEventListener("DOMContentLoaded", function () {
 }, false);
 
 function drawCircle(x, y, radius, border, border_colour, fill_colour) {
-
     context?.beginPath();
     context?.arc(x, y, radius, 0, 2 * Math.PI);
     context.strokeStyle = border_colour;
