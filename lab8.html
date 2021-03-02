@@ -20,6 +20,11 @@
     gameObjs.push( {x: 275, y: 275, radius: 25, color: "green" } )
     gameObjs.push( {x: 200, y: 300, radius: 25, color: "blue" } )
 
+    // once you get that working, update the code above to create 25 additional gameObjects with random x, y and color values; and push them to the array before the drawing and comparison
+    for (let i = 0; i < 25; i++) {
+        gameObjs.push({x: Math.floor(Math.random() * 500), y: Math.floor(Math.random() * 500), radius: 25,  color: getRandomColor()})
+    }
+
     gameObjs.forEach( (obj) => {
         ctx.beginPath()
         ctx.arc(obj.x, obj.y, obj.radius, 0, Math.PI*2);
@@ -78,13 +83,6 @@
         }
         return color;
     }
-
-    // once you get that working, update the code above to create 25 additional gameObjects with random x, y and color values; and push them to the array before the drawing and comparison
-    for (let i = 0; i < 25; i++) {
-        gameObjs.push({x: Math.floor(Math.random() * 500), y: Math.floor(Math.random() * 500), radius: 25,  color: getRandomColor()})
-    }
-
-    loop()
 
 </script>
 </body>
