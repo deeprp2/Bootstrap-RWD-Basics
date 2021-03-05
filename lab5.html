@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>Employee Search</title>
-    <link rel="manifest" href="Week-5/Activities/manifest.json">
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
 <form id="data">
@@ -59,9 +59,7 @@
             for (let dept of result) {
                 let opt = document.createElement("option");
                 opt.innerText = dept.department;
-                console.log(opt);
                 document.querySelector("#department").append(opt);
-
             }
         })
 

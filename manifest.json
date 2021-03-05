@@ -8,12 +8,12 @@
   "description": "Search the City of Chicago Employees database",
   "icons": [
     {
-      "src": "images/icon192.png",
+      "src": "Week-5/Activities/images/icon192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "images/icon512.png",
+      "src": "Week-5/Activities/images/icon512.png",
       "type": "image/png",
       "sizes": "512x512"
     }

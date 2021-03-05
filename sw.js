@@ -1,8 +1,8 @@
 let CACHE_NAME = 'my-site-cache-v1';
 let urlsToCache = [
     "lab5.html",
-    "images/icon192.png",
-    "images/icon512.png"
+    "Week-5/Activities/images/icon192.png",
+    "Week-5/Activities/images/icon512.png"
 ]
 
 self.addEventListener('install', function(event) {
@@ -10,7 +10,6 @@ self.addEventListener('install', function(event) {
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(function(cache) {
-                console.log('Opened cache');
                 return cache.addAll(urlsToCache);
             })
     );
