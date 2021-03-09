@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Funny nose and glasses</title>
+
+    <style>
+        .image-option {
+            border: solid 5px silver;
+            width: 100px;
+        }
+
+        .image-option-active {
+            border-color: blue;
+        }
+    </style>
+</head>
+<body>
+
+<video id="player" width="320" height="240" controls autoplay></video>
+<button id="capture">Capture</button>
+<canvas id="canvas" width="320" height="240"></canvas>
+<div id="imageOptions">
+    <h2>Click an image below to make it the active image</h2>
+</div>
+
+<script>
+    // array of the image options
+    const images = [
+        {
+            "file": "Week-9/Images/glasses2.png",
+            "type": "eyewear",
+            "eye_distance": 300,
+            "offset_horizontal": 150,
+            "offset_vertical": 200
+        },
+        {
+            "file": "Week-9/Images/nose-clip-art.png",
+            "type": "eyewear",
+            "eye_distance": 300,
+            "offset_horizontal": 150,
+            "offset_vertical": 100
+        }
+    ];
+
+
+    // image object for the overlay
+    let activeImage = images[0];
+    let activeImageObject = new Image();
+    activeImageObject.src = activeImage["file"];
+
+    // cleaner code if we have these as variables
+    const supported = 'mediaDevices' in navigator;
+    const player = document.getElementById('player');
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+    const captureButton = document.getElementById('capture');
+    const dataDiv = document.getElementById('imageData');
+
+
+    //
+    const visionApiEndpoint = "https://vision.googleapis.com/v1/images:annotate";
+    let requestBody;
+
+
+    // for invoking the camera
+    const constraints = {
+        video: true,
+    };
+
+
+    // Attach the video stream to the video element and autoplay.
+    navigator.mediaDevices.getUserMedia(constraints)
+        .then((stream) => {
+            player.srcObject = stream;
+        });
+
+
+    // capture button listener
+    captureButton.addEventListener('click', () => {
+        // Draw the video frame to the canvas.
+        context.drawImage(player, 0, 0, canvas.width, canvas.height);
+        // get the image facial data
+        getImageData("FACE_DETECTION");
+    });
+
+
+    // display the nose-and-glasses images in the DOM
+    images.forEach((item, idx) => {
+        let img = document.createElement("img");
+        img.setAttribute("src", item.file);
+        img.classList.add("image-option");
+        img.setAttribute("data-index", idx);
+        if (item == activeImage) {
+            img.classList.add("image-option-active");
+        }
+        document.querySelector("#imageOptions").append(img);
+    });
+
+
+    // handler to set the active image
+    document.querySelectorAll(".image-option").forEach((item) => {
+        item.addEventListener("click", (event) => {
+            document.querySelector(".image-option-active").classList.remove("image-option-active");
+            event.target.classList.add("image-option-active");
+            activeImage = images[event.target.getAttribute("data-index")];
+            activeImageObject.src = activeImage["file"];
+        });
+    });
+
+
+    let getImageData = (type) => {
+
+        // structure the request body based on Cloud Vision API docs
+        requestBody = {
+            "requests": [
+                {
+                    "image": {
+                        "content": canvas.toDataURL().split(",")[1]
+                    },
+                    "features": [
+                        {
+                            "type": type,
+                            "maxResults": 10
+                        }
+                    ]
+                }
+            ]
+        };
+
+
+        fetch(visionApiEndpoint + "?key=AIzaSyBQ1QECBQPtG7UXuQuMavSVWduqV50ISs8", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(requestBody)
+
+        })
+            .then((response) => {
+                return response.json()
+            })
+            .then(function (data) {
+                /*
+                    nose and glasses lens centers are about 300px apart,
+                    so we'll have to scale to paste on face.
+                */
+
+                let left_eye = data.responses[0].faceAnnotations[0].landmarks.filter((el) => {
+                    return el.type == "LEFT_EYE"
+                })[0];
+
+                // let right_eye = response.responses[0].faceAnnotations[0].landmarks.filter(function(el) {return el.type == "RIGHT_EYE_PUPIL"})[0];
+                let right_eye = data.responses[0].faceAnnotations[0].landmarks.filter((el) => {
+                    return el.type == "RIGHT_EYE"
+                })[0];
+
+
+                /*  compare the distance between the eyes in the response data
+                      to the distance between the lens centers to get a scaling pct
+                */
+
+                // distance for the active image
+                let imageEyeDistance = activeImage["eye_distance"];
+
+
+                let rightX = right_eye.position.x;
+                let leftX = left_eye.position.x;
+
+                let eye_distance = parseInt(rightX) - parseInt(leftX);
+
+
+                let scale_pct = eye_distance / imageEyeDistance;
+
+                /*  after getting that part working, I needed to offset
+                    the destination x,y due to drawImage dest x,y as the
+                    top left corner of the image we're drawing;
+
+                    I had to look at the nose/glasses image;  I found the center of the right-eye lens is 150 x and 100 y from the top left of the image
+
+                */
+
+                let destOffsetX = -1 * activeImage["offset_horizontal"];
+                let destOffsetY = -1 * activeImage["offset_vertical"];
+
+
+                /* after some more playing around, I realized that "right eye"
+                    in the data doesn't mean *my* right eye; I actually need to offset from the "left (most) eye (in the image)"
+                */
+
+                let leftY = left_eye.position.y;
+
+                let destX = leftX + (destOffsetX * scale_pct);
+                let destY = leftY + (destOffsetY * scale_pct);
+
+
+                /* and finally, to avoid problems in getting the data url of a
+                    canvas that has been modified, I'm putting the "funny nose"
+                    version into a separate canvas
+                */
+
+                context.drawImage(
+                    activeImageObject,                    // the image
+                    destX,                                  // horiz offset
+                    destY,                                  // vert offset
+                    activeImageObject.width * scale_pct,    // the scaled width
+                    activeImageObject.height * scale_pct    // the scaled height
+                );
+                let tilt = data.responses[0].faceAnnotations[0].tiltAngle
+                context.rotate(tilt * (Math.PI/180))
+
+                /* you could certainly check the tilt of the
+                    face and rotate the funny glasses image accordingly */
+
+            });
+    }
+</script>
+</body>
+</html>
