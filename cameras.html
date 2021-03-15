@@ -129,7 +129,7 @@
                     stopMediaTracks(currentStream);
                 }
                 const videoConstraints = {};
-                if (buttons[i].innerHTML === '') {
+                if (buttons[i].value === '') {
                     videoConstraints.facingMode = 'environment';
                 } else {
                     videoConstraints.deviceId = { exact: buttons[i].value };
@@ -146,7 +146,6 @@
                         video.srcObject = stream;
                         return navigator.mediaDevices.enumerateDevices();
                     })
-                    .then(gotDevices)
                     .catch(error => {
                         console.error(error);
                     });
@@ -156,7 +155,6 @@
 
     askUserPermission()
     navigator.mediaDevices.enumerateDevices().then(gotDevices)
-
 </script>
 </body>
 
