@@ -111,15 +111,14 @@
 
     function gotDevices(mediaDevices) {
         let controls = document.getElementsByClassName('controls')[0]
-        let count = 1;
 
         mediaDevices.forEach(mediaDevice => {
             if (mediaDevice.kind === 'videoinput') {
                 const option = document.createElement('button');
                 option.classList.add("camera-button")
+                option.value = mediaDevice.deviceId;
                 option.innerHTML = mediaDevice.label;
                 controls.appendChild(option);
-                count++;
             }
         });
 
@@ -133,7 +132,7 @@
                 if (buttons[i].innerHTML === '') {
                     videoConstraints.facingMode = 'environment';
                 } else {
-                    videoConstraints.deviceId = { exact: buttons[i].innerHTML };
+                    videoConstraints.deviceId = { exact: buttons[i].value };
                 }
                 const constraints = {
                     video: videoConstraints,
