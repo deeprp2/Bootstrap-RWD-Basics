@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lab 10</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container" style="margin-top: 10%; width: 50%;">
+    <div class="row">
+        <div class="col">
+            <label>
+                <textarea id="text-area" placeholder="Text"></textarea>
+            </label>
+        </div>
+        <div class="col">
+            <label>
+                <select id="voices-dropdown" class="form-select">
+
+                </select>
+            </label>
+        </div>
+
+        <div class="col">
+            <button id="play-button" class="btn btn-primary btn-lg" disabled>Play</button>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+<script>
+    let langSelected = ''
+
+    function getVoices() {
+        return new Promise(
+            function (resolve) {
+                let synth = window.speechSynthesis;
+                let id;
+
+                id = setInterval(() => {
+                    if (synth.getVoices().length !== 0) {
+                        resolve(synth.getVoices());
+                        clearInterval(id);
+                    }
+                }, 10);
+            }
+        )
+    }
+
+    window.onload = function() {
+        let playButton = document.getElementById('play-button')
+        let dropdown = document.getElementById('voices-dropdown')
+        let textArea = document.getElementById('text-area')
+
+        let voices = getVoices()
+        voices.then((voices) => {
+            voices.forEach((item) => {
+                let option = document.createElement('option')
+                option.textContent = item.name
+
+                option.setAttribute('data-lang', item.lang);
+                option.setAttribute('data-name', item.name);
+                dropdown.appendChild(option)
+            })
+
+            dropdown.addEventListener('change', function () {
+                playButton.disabled = false
+                langSelected = this.value
+            }, false)
+
+            playButton.addEventListener('click', function () {
+                if (langSelected !== '') {
+                    let utterThis = new SpeechSynthesisUtterance(textArea.value);
+                    let voiceObj = voices.filter(function(voice) { return voice.name === langSelected; })[0];
+                    utterThis.voice = voiceObj
+                    utterThis.lang = voiceObj.lang
+                    window.speechSynthesis.speak(utterThis);
+                    textArea.blur();
+                }
+            })
+        })
+    }
+</script>
+</body>
+</html>
