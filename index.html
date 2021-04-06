@@ -2,71 +2,87 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Deep Patel</title>
 </head>
-<body>
-    <h2>Activities</h2>
-    <ul>
-        <li>
-            <a href="bootstrap_rwd_basics.html">bootstrap rwd basics</a>
-        </li>
-        <li>
-            <a href="css_basics.html">css basics</a>
-        </li>
-        <li>
-            <a href="dom_manipulation_basics.html">dom manipulation basics</a>
-        </li>
-        <li>
-            <a href="event_handler_basics.html">event handler basics</a>
-        </li>
-        <li>
-            <a href="html_form_basics.html">HTML form basics</a>
-        </li>
-        <li>
-            <a href="map_basic.html">Map basics</a>
-        </li>
-        <li>
-            <a href="indexedDB_basics.html">indexedDB basics</a>
-        </li>
-        <li>
-            <a href="chart_basics.html">Google chart basics</a>
-        </li>
-        <li>
-            <a href="getStartedWithHTMLCanvas.html">HTML Canvas Basics</a>
-        </li>
-        <li>
-            <a href="mdnCanvasTutorial.html">MDN Canvas Basics</a>
-        </li>
-        <li>
-            <a href="svgBasics.html">SVG Basics</a>
-        </li>
-        <li>
-            <a href="cameras.html">Camera Basics</a>
-        </li>
-        <li>
-            <a href="mcw_basics.html">MCW Basics</a>
-        </li>
-    </ul>
-    <h2>Labs</h2>
-    <ul>
-        <li>
-            <a href="lab3.html">lab3</a>
-        </li>
-        <li>
-            <a href="lab4.html">lab 4</a>
-        </li>
-        <li>
-            <a href="lab5.html">lab5</a>
-        </li>
-        <li>
-            <a href="lab8.html">lab8</a>
-        </li>
-        <li>
-            <a href="lab9.html">lab9</a>
-        </li>
-        <li>
-            <a href="lab10.html">lab10</a>
-        </li>
-    </ul>
+<body style="background: #fafafa">
+    <div class="container" style="width: 50%">
+        <div class="row justify-content-center">
+            <h1 class="py-2">
+                Deep Patel
+            </h1>
+        </div>
+        <div class="row justify-content-center">
+            <h4>
+                Contact Info: deeppatel18@outlook.com
+            </h4>
+        </div>
+        <div class="row justify-content-center py-2">
+            <span style="font-size: 18px;">
+               I'm a senior Computer Science student at University of Illinois at Chicago, passionate about web development.
+            </span>
+        </div>
+        <hr/>
+    </div>
+    <div class="container" style="width: 50%">
+        <div class="row justify-content-center">
+            <h2 class="py-2">
+                Projects
+            </h2>
+        </div>
+        <div id="project-container" class="row justify-content-center py-2">
+        </div>
+    </div>
+
+<script>
+    let pages = [
+        {
+            "proj-name": "Chicago Land Inventory",
+            "proj-desc": "A web application to search and filter Chicago land inventory",
+            "proj-tech": ["Javascript", "HTML", "CSS", "Bootstrap"],
+            "proj-repo": "https://github.com/deeprp2/IT202-Spring2021-project1/",
+            "proj-link": "https://deeprp2.github.io/IT202-Spring2021-project1/",
+            "image": "image-assets/proj1.png"
+        },
+        {
+            "proj-name": "Simple Scrolling Game",
+            "proj-desc": "A web based simple scrolling game",
+            "proj-tech": ["Javascript", "HTML", "CSS", "Bootstrap"],
+            "proj-repo": "https://github.com/deeprp2/IT202-Spring2021-project2/",
+            "proj-link": "https://deeprp2.github.io/IT202-Spring2021-project2/",
+            "image": "image-assets/proj2.png"
+        }
+    ]
+
+    function createCard(title, desc, imageLink, projLink, tech, repoLink) {
+        return `
+             <div class="card m-2" style="width: 20rem;">
+                <img class="card-img-top" src="${imageLink}" height="150px" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">${title}</h5>
+                    <p class="card-text">${desc}</p>
+                    <div class="py-1">
+                        Technologies Used: ${tech}
+                    </div>
+                    <div class="py-1">
+                        <a href="${repoLink}">Github</a>
+                    </div>
+                    <a href="${projLink}" class="btn btn-primary">Demo</a>
+                </div>
+            </div>
+        `
+    }
+
+    window.onload = function () {
+        let container = document.getElementById("project-container")
+
+        pages.forEach(page => {
+            container.innerHTML += createCard(page["proj-name"], page["proj-desc"], page["image"], page["proj-link"], page["proj-tech"], page["proj-repo"])
+        })
+    }
+
+</script>
 </body>
 </html>
